@@ -31,7 +31,9 @@ jobs:
       # Install extra required packaged on top of ubuntu-latest
       - name: Install libraries for Ubuntu
         if: matrix.os == 'ubuntu-latest'
-        run: sudo apt install libasound2-dev libavcodec-dev libavformat-dev libavutil-dev
+        run: |
+          sudo apt update
+          sudo apt install libasound2-dev libavcodec-dev libavformat-dev libavutil-dev
 
       # Create a staging directory where the binary will be copied into
       - name: Make staging directory
