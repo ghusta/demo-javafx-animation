@@ -4,7 +4,6 @@ import javafx.animation.ScaleTransition;
 import javafx.animation.Transition;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -20,6 +19,9 @@ public class DemoJavaFXApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        String javaVersion = System.getProperty("java.version");
+        String javafxVersion = System.getProperty("javafx.version");
+
         Label lblHello = new Label("Hello World");
         ScaleTransition st = new ScaleTransition(Duration.seconds(1));
         st.setAutoReverse(true);
@@ -27,19 +29,13 @@ public class DemoJavaFXApplication extends Application {
         st.setByX(2);
         st.setByY(2);
         st.setNode(lblHello);
-        Button btnLock = new Button("Sleep for 10 seconds");
-        btnLock.disableProperty().set(true);
+
+        Label lblInfo = new Label("Hello, JavaFX %s, running on Java %s".formatted(javafxVersion, javaVersion));
+
         BorderPane bp = new BorderPane(lblHello);
-        bp.setBottom(btnLock);
+        bp.setTop(lblInfo);
         stage.setScene(new Scene(bp, 300, 200));
         stage.show();
-//        btnLock.setOnAction(e -> {
-//            try {
-//                Thread.sleep(10_000);
-//            } catch (InterruptedException e1) {
-//                e1.printStackTrace();
-//            }
-//        });
         st.play();
     }
 
