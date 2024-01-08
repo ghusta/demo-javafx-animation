@@ -12,12 +12,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: graalvm/setup-graalvm@v1
+      # See: https://docs.gluonhq.com/#platforms_linux_github_actions
+      - uses: gluonhq/setup-graalvm@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          java-version: '21'
-          distribution: 'graalvm'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          native-image-job-reports: 'true'
+          graalvm: '22.1.0.1-Final'
+          jdk: 'java17'
+          arch: 'x86_64'
 
       - name: Display tools versions
         run: |
@@ -26,14 +28,28 @@ jobs:
           java --version
           native-image --version
 
-      - name: Display Maven version
-        run: mvn -v
+      # Install extra required packaged on top of ubuntu-latest
+      - name: Install libraries for Ubuntu
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo apt install libasound2-dev libavcodec-dev libavformat-dev libavutil-dev libgl-dev libgtk-3-dev libpango1.0-dev libxtst-dev
 
-      - name: Compile native image
-        run: mvn gluonfx:compile
+      # Create a staging directory where the binary will be copied into
+      - name: Make staging directory
+        run: mkdir staging
 
-      - name: Link native image
-        run: mvn gluonfx:link
+      # Build your project using Maven
+      # The desktop profile is used, which means a native build will be created for the host platform (in this case Linux) itself.
+      - name: Gluon Build and Package
+        run: mvn -Pdesktop gluonfx:build gluonfx:package
 
-      - name: Package native image
-        run: mvn gluonfx:package
+      # Copy the native binary to the staging directory
+      - name: Copy native image to staging
+        if: matrix.os == 'ubuntu-latest'
+        run: cp -r target/gluonfx/x86_64-linux/HelloGluon staging
+
+      # Upload the staging directory as a build artifact. You will be able to download this after the build finishes.
+      - name: Upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: Package
+          path: staging
