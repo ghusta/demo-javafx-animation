@@ -44,12 +44,14 @@ jobs:
       # Build your project using Maven
       # The desktop profile is used, which means a native build will be created for the host platform (in this case Linux) itself.
       - name: Gluon Build and Package
-        run: mvn -ntp gluonfx:build gluonfx:package
+        run: |
+          mvn -ntp gluonfx:build gluonfx:package
+          ls -l target/gluonfx/$arch-$os/
 
       # Copy the native binary to the staging directory
       - name: Copy native image to staging
         if: matrix.os == 'ubuntu-latest'
-        run: cp -r target/gluonfx/x86_64-linux/HelloGluon staging
+        run: cp -r target/gluonfx/x86_64-linux/XXXXX staging
 
       # Upload the staging directory as a build artifact. You will be able to download this after the build finishes.
       - name: Upload
