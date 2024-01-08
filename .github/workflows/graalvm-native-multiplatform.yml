@@ -27,6 +27,8 @@ jobs:
           echo "JAVA_HOME: $JAVA_HOME"
           java --version
           native-image --version
+          echo "arch: $arch"
+          echo "os: $os"
 
       # Install extra required packaged on top of ubuntu-latest
       - name: Install libraries for Ubuntu
