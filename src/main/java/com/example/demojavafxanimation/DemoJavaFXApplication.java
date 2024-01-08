@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class DemoJavaFXApplication extends Application {
 
@@ -31,10 +32,14 @@ public class DemoJavaFXApplication extends Application {
         st.setNode(lblHello);
 
         Label lblInfo = new Label("Hello, JavaFX %s, running on Java %s".formatted(javafxVersion, javaVersion));
+        lblInfo.getStyleClass().add("info");
 
         BorderPane bp = new BorderPane(lblHello);
         bp.setTop(lblInfo);
-        stage.setScene(new Scene(bp, 300, 200));
+        Scene scene = new Scene(bp, 300, 200);
+        scene.getStylesheets().add(
+                Objects.requireNonNull(DemoJavaFXApplication.class.getResource("styles.css").toExternalForm()));
+        stage.setScene(scene);
         stage.show();
         st.play();
     }
