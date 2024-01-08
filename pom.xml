@@ -75,6 +75,14 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>com.gluonhq</groupId>
+                <artifactId>gluonfx-maven-plugin</artifactId>
+                <version>1.0.22</version>
+                <configuration>
+                    <mainClass>com.example.demojavafxanimation.DemoJavaFXApplication</mainClass>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
