@@ -34,3 +34,6 @@ jobs:
 
       - name: Link native image
         run: mvn gluonfx:link
+
+      - name: Package native image
+        run: mvn gluonfx:package
