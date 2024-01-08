@@ -29,5 +29,8 @@ jobs:
       - name: Display Maven version
         run: mvn -v
 
-      - name: Build native image
+      - name: Compile native image
         run: mvn gluonfx:compile
+
+      - name: Link native image
+        run: mvn gluonfx:link
